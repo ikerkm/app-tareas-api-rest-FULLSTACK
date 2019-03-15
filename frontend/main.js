@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
             //const TASK_ID = $(node).attr("data-id"); CON ESTO GUARDAMOS LA ID DE LA TAREA A QUITAR
             //NOTA: ES UN SELECTOR JQUERY PARA QUE NO DE ERROR TENDRAS QUE PONER EN EL HEAD DEL HTML ESTO:
             //  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+            //O UTILIZAR UN SELECTOR JS VANILLA
 
             const TASK_ID = $(node).attr("data-id");
             node.remove();
