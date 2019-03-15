@@ -7,7 +7,7 @@
     "start:front": "cd frontend ; npm start",
     "start:back": "cd backend ; npm start",
     "start": "concurrently \"npm run start:front\" \"npm run start:back\""
-},
+  },
   "author": "jupegarnica",
   "license": "ISC",
   "dependencies": {
