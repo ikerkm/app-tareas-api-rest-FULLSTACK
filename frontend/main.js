@@ -61,13 +61,19 @@ document.addEventListener('DOMContentLoaded', function () {
         divNode.innerHTML = string;
         return divNode.firstChild;
     }
+
+    //!!!!!!!!!!!!!AQUI ESTÁ EL ACTIVADOR PARA QUITAR LA TAREA
     let addRemoveListener = node => {
         node.querySelector('.remove').addEventListener('click', event => {
             // event.target.parentNode.remove();
 
-            //AQUI ELIMINAMOS LA TAREA
+            //AQUI LLAMAMOS A LA FUNCION PARA QUE NOS MANDE AL BACK (index.js) LA ID DE LA TAREA EN LA
+            //QUE LE HEMOS PULSADO A "REMOVE"
+            //const TASK_ID = $(node).attr("data-id"); CON ESTO GUARDAMOS LA ID DE LA TAREA A QUITAR
             const TASK_ID = $(node).attr("data-id");
             node.remove();
+
+            //LLAMAMOS A LA FUNCION PARA ELIMINAR LINEA 87***
             delete_tasks(TASK_ID);
 
 
@@ -78,9 +84,11 @@ document.addEventListener('DOMContentLoaded', function () {
             node.classList.toggle('completed')
         })
     }
-    //FUNCION PARA ELIMINAR LA TAREA EN EL BACK
+    //FUNCION PARA ELIMINAR LA TAREA EN EL BACK ****
     function delete_tasks(task_id) {
-        console.log(task_id);
+        //ESTA ES LA SINTAXIS PARA ENVIAR LOS DATOS AL BACK (index.js) baseApiUrl es la direccion de 
+        //nuestro back, + '/tasks' la ruta donde vamos a procesar nestro dato, el method es delete
+        //por que vamos a realizar dicho procedimiento
         fetch(baseApiUrl + '/tasks', {
                 method: 'delete',
                 headers: {
@@ -88,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    //aqui es donde ponemos nuestra variable con la id para mandarla al back
                     task_id
                 })
             })
@@ -100,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    //AQUI ENVIA AL BACKEND PARA GUARDAR
+    //AQUI ENVIA AL BACKEND PARA GUARDAR LA TAREA
     let saveTaskToBackend = text => {
         // GET to /tasks
         return fetch(baseApiUrl + '/tasks', {

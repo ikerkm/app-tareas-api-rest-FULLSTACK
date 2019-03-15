@@ -27,25 +27,23 @@ app.get('/tasks', (req, res) => {
     res.status(200).json(data.tasks);
 
 });
-/*
-app.delete(delete_tasks);
 
-function delete_tasks(req, res) {
-    console.log("working");
-    // res.status(200).json("ye");
-}
-*/
+
+//!!!!!!!!!!!!!!!!!!!!!AQUI LLAMAMOS AL METODO DELETE PARA REALIZAR LA ELIMINACIÓN DE LA TAREA
 app.delete('/tasks', function (req, res) {
-
+    //EL req ES EL DATO QUE MANDAMOS DESDE main.js (FUNCION LINEA 88)
+    //COMPROBAMOS QUE LA ID QUE HEMOS MANDADO DE main.js (variable task_id) es de tipo string
     if (typeof req.body.task_id === "string") {
         try {
 
-            // get a parse file
+            // COGER EL ARCHIVO DONDE ESTAN LAS TAREAS GUARDADAS
             const stringJson = fs.readFileSync('./bd.json', 'UTF-8');
 
             const data = JSON.parse(stringJson);
-            // add tasks
-            console.log("before:" + data.tasks);
+
+            //AQUI RECORREMOS EL ARRAY OBTENIDO DEL ARCHIVO CON LAS TAREAS Y COMPARAMOS LA ID QUE HEMOS OBTENIDO
+            //CON LAS ID DE LOS ITEMS DEL ARRAY, EN EL IF COMPROBAMOS SI LA ID COINCIDE Y SI ES ASI
+            //ELIMINAMOS EL CONTENIDO DE ESA POSICION DEL ARRAY.
             for (let i = 0; i < data.tasks.length; i++) {
                 if (data.tasks[i].id === parseInt(req.body.task_id)) {
 
@@ -54,15 +52,18 @@ app.delete('/tasks', function (req, res) {
                 }
 
             }
+            //AL ELIMINAR EL CONTENIDO DEL ARRAY SE NOS QUEDARA COMO NULL EN EL HUECO, POR LO TANTO LO VAMOS A FILTRAR
+            //PARA QUE SI ENCUENTRA UN NULL EN ALGUNA DE LAS POSICIONES DEL ARRAY, LO BORRE
             const DATA_FILTERED = data.tasks.filter(remove_empty)
 
             function remove_empty(data) {
                 return data !== null;
             }
+            //AQUI SUSTITUIMOS EL ARAY "FILTRADO" POR EL ORIGINAL
             data.tasks = DATA_FILTERED;
             console.log("after:" + data);
 
-            //save to file
+            //Y CON ESTO GUARDAMOS LOS DATOS MODIFICADOS
             const newDataString = JSON.stringify(data);
             fs.writeFileSync('./bd.json', newDataString);
 
