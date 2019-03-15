@@ -28,7 +28,8 @@ app.get('/tasks', (req, res) => {
 
 });
 
-
+//!!!!!!!!!!!!!!!!!!!!!!NOTA PARA QUE A MI ME FUNCIONARA HE TENIDO QUE PONER ESTO DENTRO DEL app.use 
+//DE LA LINEA 14 res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
 //!!!!!!!!!!!!!!!!!!!!!AQUI LLAMAMOS AL METODO DELETE PARA REALIZAR LA ELIMINACIÓN DE LA TAREA
 app.delete('/tasks', function (req, res) {
     //EL req ES EL DATO QUE MANDAMOS DESDE main.js (FUNCION LINEA 88)
