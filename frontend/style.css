@@ -2,19 +2,22 @@
 * {
     box-sizing: border-box;
 }
+
 body {
-    display:flex;
+    display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
+
 header {
     background: tomato;
     display: flex;
     justify-content: center;
     padding: 2em;
 }
+
 main {
-    flex:1;
+    flex: 1;
     background: grey;
     color: white;
     padding: 2em;
@@ -36,4 +39,9 @@ main {
 .completed {
     text-decoration: line-through;
     opacity: 0.5;
+}
+
+.edit_text {
+
+    border: 0;
 }

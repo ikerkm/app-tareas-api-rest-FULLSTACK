@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // add listeners
         addRemoveListener(taskNode);
         addCompleteListener(taskNode);
-
+        addUpdateListener(taskNode);
         return taskNode;
 
     }
@@ -51,10 +51,13 @@ document.addEventListener('DOMContentLoaded', function () {
             id,
             completed
         }) =>
-        `<div class="task ${completed ? 'completed': ''}" data-id="${id}" style="border-color: ${color}">
-            <div class="text">${text}</div>
+        `<div class="task ${completed ? 'completed': ''}" data-id="${id}" style="background-color: ${color}">
+        <input type="color" class='select_color' name="favcolor" value="${color}">
+           
+            <input type="text" value="${text}" style="background-color: ${color}" class="edit_text"/>
             <button class="remove">remove</button>
             <button class="complete">complete</button>
+            <button class="update">Update</button>
         </div>`
     let createNodeFromString = string => {
         let divNode = document.createElement('div');
@@ -83,10 +86,46 @@ document.addEventListener('DOMContentLoaded', function () {
 
         })
     }
-    let addCompleteListener = node => {
-        node.querySelector('.complete').addEventListener('click', event => {
-            node.classList.toggle('completed')
+    let addUpdateListener = node => {
+        node.querySelector('.update').addEventListener('click', event => {
+
+
+            let the_color = $(node).find('.select_color').val();
+            let the_text = $(node).find('.edit_text').val();
+            const TASK_ID = $(node).attr("data-id");
+
+            let data_to_update = {
+                the_color,
+                the_text,
+                TASK_ID
+            };
+            console.log(data_to_update);
+            update_data(data_to_update);
+
+
         })
+    }
+
+
+    function update_data(data_update) {
+        fetch(baseApiUrl + '/tasks', {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    //aqui es donde ponemos nuestra variable con la id para mandarla al back
+                    //Y DE AQUI ESTO SE ENVIA AL index.js 
+                    data_update
+                })
+            })
+            .then(location.reload())
+
+
+            .catch(console.error)
+
+
     }
     //FUNCION PARA ELIMINAR LA TAREA EN EL BACK ****
     function delete_tasks(task_id) {
@@ -113,7 +152,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
+    let addCompleteListener = node => {
+        node.querySelector('.complete').addEventListener('click', event => {
+            node.classList.toggle('completed')
 
+
+
+        })
+    }
     //AQUI ENVIA AL BACKEND PARA GUARDAR LA TAREA
     let saveTaskToBackend = text => {
         // GET to /tasks
@@ -158,9 +204,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // clean value
                 event.target.value = '';
-
-                addRemoveListener(newTaskNode);
                 addCompleteListener(newTaskNode);
+                addRemoveListener(newTaskNode);
+                addUpdateListener(newTaskNode);
             })
 
 
