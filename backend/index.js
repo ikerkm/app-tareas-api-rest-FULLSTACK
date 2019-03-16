@@ -27,6 +27,9 @@ app.get('/tasks', (req, res) => {
     res.status(200).json(data.tasks);
 
 });
+
+
+//AQUI REALIZAMOS EL UPDATE EN EL BACK
 app.put('/tasks', (req, res) => {
     if (typeof req.body.data_update === "object") {
         try {
@@ -38,7 +41,7 @@ app.put('/tasks', (req, res) => {
 
             //AQUI RECORREMOS EL ARRAY OBTENIDO DEL ARCHIVO CON LAS TAREAS Y COMPARAMOS LA ID QUE HEMOS OBTENIDO
             //CON LAS ID DE LOS ITEMS DEL ARRAY, EN EL IF COMPROBAMOS SI LA ID COINCIDE Y SI ES ASI
-            //ELIMINAMOS EL CONTENIDO DE ESA POSICION DEL ARRAY.
+            //ACTUALIZAMOS EL CONTENIDO DE ESA POSICION DEL ARRAY.
             for (let i = 0; i < data.tasks.length; i++) {
                 if (data.tasks[i].id === parseInt(req.body.data_update.TASK_ID)) {
                     console.log("UPDATING");

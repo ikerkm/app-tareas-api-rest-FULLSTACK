@@ -86,10 +86,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         })
     }
+
+    //ACTIVADOR DEL BOTON DE UPDATE
     let addUpdateListener = node => {
         node.querySelector('.update').addEventListener('click', event => {
 
-
+            //TOMAMOS DATOS DE LA TAREA
             let the_color = $(node).find('.select_color').val();
             let the_text = $(node).find('.edit_text').val();
             const TASK_ID = $(node).attr("data-id");
@@ -106,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     }
 
-
+    //FUNCION PARA ACTUALIZAR COLOR Y TEXTO
     function update_data(data_update) {
         fetch(baseApiUrl + '/tasks', {
                 method: 'PUT',
