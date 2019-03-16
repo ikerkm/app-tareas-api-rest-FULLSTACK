@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: JSON.stringify({
                     //aqui es donde ponemos nuestra variable con la id para mandarla al back
-                    //Y DE AQUI ESTO SE ENVIA AL index.js linea 33
+                    //Y DE AQUI ESTO SE ENVIA AL index.js 
                     task_id
                 })
             })
