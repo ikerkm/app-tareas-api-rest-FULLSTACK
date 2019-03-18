@@ -29,19 +29,17 @@ app.get('/tasks', (req, res) => {
 });
 
 
-//AQUI REALIZAMOS EL UPDATE EN EL BACK
+
 app.put('/tasks', (req, res) => {
     if (typeof req.body.data_update === "object") {
         try {
 
-            // COGER EL ARCHIVO DONDE ESTAN LAS TAREAS GUARDADAS
+
             const stringJson = fs.readFileSync('./bd.json', 'UTF-8');
 
             const data = JSON.parse(stringJson);
 
-            //AQUI RECORREMOS EL ARRAY OBTENIDO DEL ARCHIVO CON LAS TAREAS Y COMPARAMOS LA ID QUE HEMOS OBTENIDO
-            //CON LAS ID DE LOS ITEMS DEL ARRAY, EN EL IF COMPROBAMOS SI LA ID COINCIDE Y SI ES ASI
-            //ACTUALIZAMOS EL CONTENIDO DE ESA POSICION DEL ARRAY.
+
             for (let i = 0; i < data.tasks.length; i++) {
                 if (data.tasks[i].id === parseInt(req.body.data_update.TASK_ID)) {
                     console.log("UPDATING");
@@ -56,21 +54,6 @@ app.put('/tasks', (req, res) => {
 
             const newDataString = JSON.stringify(data);
             fs.writeFileSync('./bd.json', newDataString);
-            //AL ELIMINAR EL CONTENIDO DEL ARRAY SE NOS QUEDARA COMO NULL EN EL HUECO, POR LO TANTO LO VAMOS A FILTRAR
-            //PARA QUE SI ENCUENTRA UN NULL EN ALGUNA DE LAS POSICIONES DEL ARRAY, LO BORRE
-            //    const DATA_FILTERED = data.tasks.filter(remove_empty)
-
-            /* function remove_empty(data) {
-                 return data !== null;
-             }*/
-            //AQUI SUSTITUIMOS EL ARAY "FILTRADO" POR EL ORIGINAL
-            /* data.tasks = DATA_FILTERED;
-             console.log("after:" + data);*/
-
-            //Y CON ESTO GUARDAMOS LOS DATOS MODIFICADOS
-            /* const newDataString = JSON.stringify(data);
-             fs.writeFileSync('./bd.json', newDataString);*/
-
             // response to front
             res.json({
                 code: 200
@@ -82,6 +65,26 @@ app.put('/tasks', (req, res) => {
             })
 
         }
+    } else if (typeof req.body.data_update === "string") {
+
+        const stringJson = fs.readFileSync('./bd.json', 'UTF-8');
+
+        const data = JSON.parse(stringJson);
+
+        for (let i = 0; i < data.tasks.length; i++) {
+            if (data.tasks[i].id === parseInt(req.body.data_update)) {
+                console.log("UPDATING");
+                data.tasks[i].completed = true;
+
+
+
+
+            }
+
+        }
+        const newDataString = JSON.stringify(data);
+        fs.writeFileSync('./bd.json', newDataString);
+
     } else {
         res.status(400).json({
             message: 'NO TEXT? REALLY? THINK TWICE'
@@ -89,23 +92,18 @@ app.put('/tasks', (req, res) => {
     }
 
 });
-//!!!!!!!!!!!!!!!!!!!!!!NOTA PARA QUE A MI ME FUNCIONARA HE TENIDO QUE PONER ESTO DENTRO DEL app.use 
-//DE LA LINEA 14 res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-//!!!!!!!!!!!!!!!!!!!!!AQUI LLAMAMOS AL METODO DELETE PARA REALIZAR LA ELIMINACIÓN DE LA TAREA
+
 app.delete('/tasks', function (req, res) {
-    //EL req ES EL DATO QUE MANDAMOS DESDE main.js (FUNCION LINEA 88)
-    //COMPROBAMOS QUE LA ID QUE HEMOS MANDADO DE main.js (variable task_id) es de tipo string
+
     if (typeof req.body.task_id === "string") {
         try {
 
-            // COGER EL ARCHIVO DONDE ESTAN LAS TAREAS GUARDADAS
+
             const stringJson = fs.readFileSync('./bd.json', 'UTF-8');
 
             const data = JSON.parse(stringJson);
 
-            //AQUI RECORREMOS EL ARRAY OBTENIDO DEL ARCHIVO CON LAS TAREAS Y COMPARAMOS LA ID QUE HEMOS OBTENIDO
-            //CON LAS ID DE LOS ITEMS DEL ARRAY, EN EL IF COMPROBAMOS SI LA ID COINCIDE Y SI ES ASI
-            //ELIMINAMOS EL CONTENIDO DE ESA POSICION DEL ARRAY.
+
             for (let i = 0; i < data.tasks.length; i++) {
                 if (data.tasks[i].id === parseInt(req.body.task_id)) {
 
@@ -114,18 +112,15 @@ app.delete('/tasks', function (req, res) {
                 }
 
             }
-            //AL ELIMINAR EL CONTENIDO DEL ARRAY SE NOS QUEDARA COMO NULL EN EL HUECO, POR LO TANTO LO VAMOS A FILTRAR
-            //PARA QUE SI ENCUENTRA UN NULL EN ALGUNA DE LAS POSICIONES DEL ARRAY, LO BORRE
+
             const DATA_FILTERED = data.tasks.filter(remove_empty)
 
             function remove_empty(data) {
                 return data !== null;
             }
-            //AQUI SUSTITUIMOS EL ARAY "FILTRADO" POR EL ORIGINAL
             data.tasks = DATA_FILTERED;
             console.log("after:" + data);
 
-            //Y CON ESTO GUARDAMOS LOS DATOS MODIFICADOS
             const newDataString = JSON.stringify(data);
             fs.writeFileSync('./bd.json', newDataString);
 
@@ -158,7 +153,8 @@ app.post('/tasks', (req, res) => {
                 text: req.body.text,
                 completed: false,
                 id: Date.now(),
-                color: null
+                color: null,
+
             }
             // get a parse file
             const stringJson = fs.readFileSync('./bd.json', 'UTF-8');
